@@ -3,6 +3,8 @@ import { ScrollView, SafeAreaView } from "react-native";
 
 import styled from "styled-components";
 import Card from "./components/Card";
+import Logo from "./components/Logo";
+import { NotificationIcon } from "./components/Icons";
 
 export default function App() {
   return (
@@ -13,7 +15,27 @@ export default function App() {
             <Avatar source={require("./assets/avatar.jpg")} />
             <Title>Welcome back,</Title>
             <Name>Tavo</Name>
+
+            <NotificationIcon
+              style={{ position: "absolute", right: 20, top: 5 }}
+            />
           </TitleBar>
+
+          <ScrollView
+            style={{
+              flexDirection: "row",
+              padding: 20,
+              paddingLeft: 12,
+              paddingTop: 30,
+            }}
+            horizontal={true}
+          >
+            <Logo
+              image={require("./assets/logo-framerx.png")}
+              text="Framer x"
+            />
+            <Logo image={require("./assets/logo-figma.png")} text="Figma" />
+          </ScrollView>
 
           <Subtitle>Continue Learning</Subtitle>
 
@@ -55,7 +77,7 @@ const Subtitle = styled.Text`
   font-weight: 600;
   font-size: 15px;
   margin-left: 20px;
-  margin-top: 50px;
+  margin-top: 20px;
   text-transform: uppercase;
 `;
 
