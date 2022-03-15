@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { ScrollView, SafeAreaView } from "react-native";
 
 import styled from "styled-components";
@@ -6,10 +5,12 @@ import Card from "./components/Card";
 import Logo from "./components/Logo";
 import { NotificationIcon } from "./components/Icons";
 import Course from "./components/course";
+import Menu from "./components/Menu";
 
 export default function App() {
   return (
     <Container>
+      <Menu />
       <SafeAreaView>
         <ScrollView style={{ height: "100%" }}>
           <TitleBar>
