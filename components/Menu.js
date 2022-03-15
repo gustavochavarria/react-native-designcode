@@ -6,25 +6,51 @@ import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components";
 import MenuItem from "./MenuItem";
 
+import { connect } from "react-redux";
+
+function mapStateToProps(state) {
+  return { action: state.action };
+}
+
+function mapDispatchToProps(dispatch) {
+  console.log("dispacthing....");
+  return {
+    closeMenu: () =>
+      dispatch({
+        type: "CLOSE_MENU",
+      }),
+  };
+}
+
 const screenHeight = Dimensions.get("window").height;
 
-export default class Menu extends Component {
+class Menu extends Component {
   state = {
     top: new Animated.Value(screenHeight),
   };
 
   componentDidMount() {
-    Animated.spring(this.state.top, {
-      toValue: 0,
-      // useNativeDriver: true,
-    }).start();
+    this.toggleMenu();
+  }
+
+  componentDidUpdate() {
+    this.toggleMenu();
   }
 
   toggleMenu = () => {
-    Animated.spring(this.state.top, {
-      toValue: screenHeight,
-      // useNativeDriver: true,
-    }).start();
+    if (this.props.action === "openMenu") {
+      // Open
+      Animated.spring(this.state.top, {
+        toValue: 0,
+      }).start();
+    }
+
+    if (this.props.action === "closeMenu") {
+      // Close
+      Animated.spring(this.state.top, {
+        toValue: screenHeight,
+      }).start();
+    }
   };
 
   render() {
@@ -37,7 +63,7 @@ export default class Menu extends Component {
         </Cover>
 
         <TouchableOpacity
-          onPress={this.toggleMenu}
+          onPress={this.props.closeMenu}
           style={{
             position: "absolute",
             top: 120,
@@ -138,3 +164,5 @@ const items = [
     text: "see you soon!",
   },
 ];
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
