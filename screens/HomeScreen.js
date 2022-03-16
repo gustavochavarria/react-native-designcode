@@ -34,7 +34,7 @@ function mapDispatchToProps(dispatch) {
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    headerShown: false,
   };
 
   state = {
