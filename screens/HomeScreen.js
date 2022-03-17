@@ -19,6 +19,42 @@ import Menu from "../components/Menu";
 import { connect } from "react-redux";
 import Avatar from "../components/Avatar";
 
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+const CardsQuery = gql`
+  {
+    cardsCollection {
+      items {
+        title
+        subtitle
+        image {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+        subtitle
+        caption
+        logo {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+      }
+    }
+  }
+`;
+
 function mapStateToProps(state) {
   return { action: state.action, name: state.name };
 }
@@ -127,16 +163,29 @@ class HomeScreen extends React.Component {
                 style={{ paddingBottom: 30 }}
                 showsHorizontalScrollIndicator={false}
               >
-                {cards.map((card) => (
-                  <TouchableOpacity
-                    key={`${card.title}-${card.caption}`}
-                    onPress={() => {
-                      this.props.navigation.push("Section", { section: card });
-                    }}
-                  >
-                    <Card {...card} />
-                  </TouchableOpacity>
-                ))}
+                <Query query={CardsQuery}>
+                  {({ loading, error, data }) => {
+                    if (loading) return <Message>Loading...</Message>;
+                    if (error) return <Message>Error...</Message>;
+
+                    return (
+                      <CardsContainer>
+                        {data.cardsCollection.items.map((card) => (
+                          <TouchableOpacity
+                            key={`${card.title}-${card.caption}`}
+                            onPress={() => {
+                              this.props.navigation.push("Section", {
+                                section: card,
+                              });
+                            }}
+                          >
+                            <Card {...card} />
+                          </TouchableOpacity>
+                        ))}
+                      </CardsContainer>
+                    );
+                  }}
+                </Query>
               </ScrollView>
 
               <Subtitle>Courses</Subtitle>
@@ -188,30 +237,6 @@ const logos = [
   {
     image: require("../assets/logo-vue.png"),
     text: "Vue",
-  },
-];
-
-const cards = [
-  {
-    caption: "6 of 12 sections",
-    image: require("../assets/background11.jpg"),
-    logo: require("../assets/logo-react.png"),
-    subtitle: "React Native",
-    title: "React Native for Designers",
-  },
-  {
-    caption: "5 of 12 sections",
-    image: require("../assets/background12.jpg"),
-    logo: require("../assets/logo-react.png"),
-    subtitle: "Styled Components",
-    title: "Styled Components",
-  },
-  {
-    image: require("../assets/background14.jpg"),
-    logo: require("../assets/logo-vue.png"),
-    title: "Vue",
-    caption: "vue",
-    subtitle: "1 of 10 sections",
   },
 ];
 
@@ -294,4 +319,14 @@ const TitleBar = styled.View`
   width: 100%;
   margin-top: 50px;
   padding-left: 80px;
+`;
+
+const Message = styled.Text`
+  margin: 20px;
+  color: #b8bece;
+  font-size: 15px;
+  font-weight: 500;
+`;
+const CardsContainer = styled.View`
+  flex-direction: row;
 `;
