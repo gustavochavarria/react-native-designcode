@@ -3,6 +3,8 @@ import { TouchableOpacity, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 
+import Markdown from "react-native-showdown";
+
 export default function SectionScreen(props) {
   const { navigation } = props;
 
@@ -47,6 +49,15 @@ export default function SectionScreen(props) {
           />
         </CloseView>
       </TouchableOpacity>
+
+      <Content>
+        <Markdown
+          markdown={section.content}
+          css={htmlStyles}
+          scalesPageToFit={false}
+          scrollEnabled={false}
+        />
+      </Content>
     </Container>
   );
 }
@@ -55,6 +66,67 @@ SectionScreen.navigationOptions = () => ({
   //   title: "hello",
   header: null,
 });
+
+const htmlStyles = `
+    <style>
+      * {
+        font-family: -apple-system; 
+    		margin: 0;
+    		padding: 0;
+        font-size: 17px; 
+        font-weight: normal; 
+        color: #3c4560;
+        line-height: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+        text-transform: uppercase;
+        color: #b8bece;
+        font-weight: 600;
+        margin-top: 50px;
+      }
+
+    	p {
+    	  margin-top: 20px;
+      }
+
+      a {
+        color: #4775f2;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      strong {
+        font-weight: 700;
+      }
+
+      img {
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 10px;
+      }
+
+      pre {
+        padding: 20px;
+        background: #212C4F;
+        overflow: hidden;
+        word-wrap: break-word;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+  
+      code {
+        color: white;
+      }
+
+    </style>
+    `;
+
+const Content = styled.View`
+  height: 1000px;
+  padding: 20px;
+`;
 
 const Container = styled.View`
   flex: 1;

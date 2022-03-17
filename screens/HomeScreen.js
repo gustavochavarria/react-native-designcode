@@ -50,6 +50,7 @@ const CardsQuery = gql`
           width
           height
         }
+        content
       }
     }
   }
@@ -191,7 +192,7 @@ class HomeScreen extends React.Component {
               <Subtitle>Courses</Subtitle>
               <ScrollView
                 horizontal={true}
-                style={{ paddingBottom: 30 }}
+                style={{ paddingBottom: 30, paddingLeft: 10 }}
                 showsHorizontalScrollIndicator={false}
               >
                 {courses.map((course) => (
